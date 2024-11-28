@@ -43,7 +43,7 @@ public class PogoController : MonoBehaviour
     //States
     private bool jumping; //Build up to spring Jump
     private bool springReady = true; //Specifies that the spring is ready to be used to jump
-
+    private bool significantMovement = false;
     //Jumping Variables
     private float jumpTime;
 
@@ -146,6 +146,14 @@ public class PogoController : MonoBehaviour
         // Get input directions
         Vector2 inputs = new Vector2(inputActions.Player.Horizontal.ReadValue<float>(), inputActions.Player.Vertical.ReadValue<float>());
 
+        if(inputs.magnitude>1.6f)
+        {
+            significantMovement = true;
+        }
+        else
+        {
+            significantMovement = false;
+        }
         // Calculate the gravity direction (assuming a custom gravity vector is used)
         Vector3 gravityDirection = artificalGravityDirection.normalized;
 
@@ -194,10 +202,23 @@ public class PogoController : MonoBehaviour
     //The Pogo is stabilised by trending towards the "gravity" direction at this moment, can be and should be affected by world gravity or an area's custom gravity
     private void Stabilise()
     {
-        // Apply torque to rotate the object towards where "gravity" is at this moment
-        Vector3 torque = -artificalGravityDirection * rotateForce*0.35f;
+        if (!significantMovement && Time.time-jumpTime>0.7f || CheckIfGrounded() && !jumping)
+        {
+            // Apply torque to rotate the object towards where "gravity" is at this moment
+            Vector3 torque = -artificalGravityDirection * rotateForce * 0.45f;
 
-        rb.AddTorque(torque, ForceMode.Force);
+            rb.AddTorque(torque, ForceMode.Force);
+        }
+        else if(jumping)
+        {
+            Vector3 torque = -artificalGravityDirection * rotateForce * 0.15f;
+
+            rb.AddTorque(torque, ForceMode.Force);
+        }
+        else
+        {
+            Vector3 torque = -artificalGravityDirection * rotateForce * 0.15f;
+        }
     }
 
     private void ResetJump()
