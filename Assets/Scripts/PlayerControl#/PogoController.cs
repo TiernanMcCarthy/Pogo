@@ -20,6 +20,7 @@ public class PogoController : MonoBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private float maxAngularVelocity;
     [SerializeField] private Vector3 artificalGravityDirection;
+    [SerializeField] private float coyoteTime = 0.15f;
 
     //Drag is different whilst on the ground and whilst the spring is readying for a jump
     //Higher drag makes the pogo more stable and allows for the player to land and jump more smoothly in quick succession
@@ -46,7 +47,7 @@ public class PogoController : MonoBehaviour
     private bool significantMovement = false;
     //Jumping Variables
     private float jumpTime;
-
+    private float lastGroundTime;
     private float jumpLerp = 0; //Manages spring size by evaluating jumptime against the maxJumpTime variable, as a ratio of 0-1
 
 
@@ -76,6 +77,18 @@ public class PogoController : MonoBehaviour
     public Vector3 GetGravity()
     {
         return artificalGravityDirection;
+    }
+
+    private float GetGroundAngleRelativeToGravity()
+    {
+        RaycastHit hit;
+        float slopeAngle = 0;
+        if(Physics.Raycast(springTransform.position, springTransform.up * -1, out hit, springHeight * 1.2f))
+        {
+           slopeAngle = Vector3.Angle(hit.normal, -artificalGravityDirection);
+        }
+        Debug.Log(slopeAngle);
+        return slopeAngle;
     }
     /* WORKS ISH
     private void RotatePogo()
@@ -251,8 +264,9 @@ public class PogoController : MonoBehaviour
         RaycastHit hit;
 
         // Cast ray down to detect the terrain or surface below the player
-        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*1.2f))
+        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*1.45f))
         {
+            lastGroundTime = Time.time;
             return true;
         }
 
@@ -266,10 +280,22 @@ public class PogoController : MonoBehaviour
             rb.drag = jumpingDrag;
             jumpTime = Time.time;
             springReady = false;
+
+            //Give a bit more grip if we detect a wall of at least 70 degrees against gravity
+            if(GetGroundAngleRelativeToGravity()>70)
+            {
+                rb.drag = rb.drag * 1.1f;
+            }
         }
 
         if(jumping)
         {
+            CheckIfGrounded();
+            if(Time.time-lastGroundTime>coyoteTime)
+            {
+                ResetJump();
+                StartCoroutine(ResetSpring(jumpLerp));
+            }
             //Manage Spring Size
             jumpLerp = (Time.time - jumpTime) / maxJumpTime;
 

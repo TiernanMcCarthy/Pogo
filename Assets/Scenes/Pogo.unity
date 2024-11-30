@@ -1921,7 +1921,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 291126901}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000011169729, y: -0.000000006158701, z: -4.089766e-10,
+  m_LocalRotation: {x: -0.000000040955673, y: 0.000000023217815, z: 0.0000000015418102,
     w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -3522,7 +3522,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 558401723}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.034776747, y: -0.000000006140753, z: -6.2290845e-10, w: 0.99939513}
+  m_LocalRotation: {x: -0.034776703, y: -0.0000000034997347, z: -3.5500766e-10, w: 0.99939513}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5697,7 +5697,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900107800}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.09830404, y: -0.019853888, z: -0.0033017038, w: 0.9949529}
+  m_LocalRotation: {x: -0.098304026, y: -0.019853886, z: -0.0033017027, w: 0.9949529}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12281,10 +12281,11 @@ MonoBehaviour:
   centreOfMass: {fileID: 1726328250}
   springTransform: {fileID: 1374502706}
   rotateForce: 0.12
-  jumpForce: 900
+  jumpForce: 1000
   maxAngularVelocity: 5
-  artificalGravityDirection: {x: 0, y: 0, z: 0}
-  normalDrag: 0.2
+  artificalGravityDirection: {x: 0, y: -9.81, z: 0}
+  coyoteTime: 0.15
+  normalDrag: 0.34
   jumpingDrag: 8
   highestJump: 1000
   maxJumpTime: 1.5
