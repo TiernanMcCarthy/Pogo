@@ -14,6 +14,7 @@ public class PogoController : MonoBehaviour
     [SerializeField] private Transform bottomOfPogo;
     [SerializeField] private Transform centreOfMass;
     [SerializeField] private Transform springTransform;
+    [SerializeField] private Transform triggerTestTransform;
 
     [Header("Character Movement Variables")]
     [SerializeField] private float rotateForce;
@@ -51,6 +52,10 @@ public class PogoController : MonoBehaviour
     private float jumpLerp = 0; //Manages spring size by evaluating jumptime against the maxJumpTime variable, as a ratio of 0-1
 
 
+    [SerializeField]
+    private List<Modifier> modifiers = new List<Modifier>();
+
+    private float jumpModifier = 1;
 
     #endregion
 
@@ -67,6 +72,8 @@ public class PogoController : MonoBehaviour
         rb.useGravity = false;
         //Set Gravity
         artificalGravityDirection = Physics.gravity;
+
+        modifiers= new List<Modifier>();
     }
 
     public void SetGravity(Vector3 gravityDir)
@@ -199,7 +206,7 @@ public class PogoController : MonoBehaviour
     //Store "Landing" force and use this as a multiplier for next jump for a few seconds before it fades?
     private void Jump(float jumpTime)
     {
-        Vector3 dir = transform.up * jumpForce * Mathf.Clamp(jumpTime,0.3f,maxJumpTime);
+        Vector3 dir = transform.up * jumpForce * Mathf.Clamp(jumpTime,0.3f,maxJumpTime)*jumpModifier;
 
         if(dir.magnitude>highestJump)
         {
@@ -319,6 +326,32 @@ public class PogoController : MonoBehaviour
         }
     }
 
+    private Collider[] TestTriggerBox()
+    {
+        return Physics.OverlapBox(triggerTestTransform.transform.position, new Vector3(0.05f, 0.065f, 0.05f), triggerTestTransform.transform.rotation);
+    }
+    /// <summary>
+    /// Iterate through all modifiers and add their effects, these will be reflected in their respective functions
+    /// </summary>
+    private void CheckModifiers()
+    {
+        modifiers.Clear();
+        Collider[] collisions=TestTriggerBox();
+
+        foreach(Collider coll in collisions)
+        {
+            if (coll.CompareTag("Modifier"))
+            {
+                modifiers.Add(coll.GetComponent<Modifier>());
+            }
+        }
+        jumpModifier = 1;
+        foreach(var modifier in modifiers)
+        {
+            jumpModifier += modifier.jumpModifier;
+        }
+    }
+
     //The player's rigid body gravity is disabled by default, an ARTIFICAL direction is used, this allows for stage gravity to change
     //Triggers or the level gravity should change based upon design
     private void ApplyGravity()
@@ -330,18 +363,43 @@ public class PogoController : MonoBehaviour
     void FixedUpdate()
     {
         rb.centerOfMass = rb.transform.InverseTransformPoint(centreOfMass.transform.position);
+        CheckModifiers();
         RotatePogo();
         NewPogoJump();
         Stabilise();
         ApplyGravity();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider col)
     {
-        if(collision.rigidbody == null)
+        /*
+        if(col.gameObject.CompareTag("Modifier"))
         {
-            
-        }
+            foreach (Modifier m in modifiers) //Remove if found
+            {
+                if (m.gameObject == col.gameObject)
+                {
+                    return;
+                }
+            }
+            Modifier mod =col.gameObject.GetComponent<Modifier>();
+            modifiers.Add(mod);
+        }*/
 
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //Check for modifiers
+        /*
+
+        foreach(Modifier m in modifiers) //Remove if found
+        {
+            if(m.gameObject==other.gameObject)
+            {
+                modifiers.Remove(m);
+                break;
+            }
+        }*/
     }
 }
