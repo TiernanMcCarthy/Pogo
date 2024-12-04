@@ -27,7 +27,8 @@ public class PogoController : MonoBehaviour
     //Higher drag makes the pogo more stable and allows for the player to land and jump more smoothly in quick succession
     [SerializeField] private float normalDrag;
     [SerializeField] private float jumpingDrag;
-
+    [SerializeField] private float angularDrag = 0.05f;
+    [SerializeField] private float groundedAngularDragMultiplier = 3.0f;
     private bool bouncing = false;
 
     [Header("Spring Properties")]
@@ -163,6 +164,16 @@ public class PogoController : MonoBehaviour
 
     private void RotatePogo()
     {
+        /*
+        if(springReady && jumping==false && CheckIfGrounded())
+        {
+            rb.drag = normalDrag * 3;
+            rb.angularDrag = angularDrag * groundedAngularDragMultiplier;
+        }
+        else
+        {
+            rb.angularDrag = angularDrag;
+        }*/
         // Get input directions
         Vector2 inputs = new Vector2(inputActions.Player.Horizontal.ReadValue<float>(), inputActions.Player.Vertical.ReadValue<float>());
 
