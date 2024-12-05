@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class PogoController : MonoBehaviour
@@ -22,6 +23,7 @@ public class PogoController : MonoBehaviour
     [SerializeField] private float maxAngularVelocity;
     [SerializeField] private Vector3 artificalGravityDirection;
     [SerializeField] private float coyoteTime = 0.15f;
+    [SerializeField] private float upRightFactor = 0.3f; //Factor of momentum that is used to stay upright
 
     //Drag is different whilst on the ground and whilst the spring is readying for a jump
     //Higher drag makes the pogo more stable and allows for the player to land and jump more smoothly in quick succession
@@ -55,6 +57,8 @@ public class PogoController : MonoBehaviour
 
     [SerializeField]
     private List<Modifier> modifiers = new List<Modifier>();
+
+    public UnityEvent OnJump;
 
     private float jumpModifier = 1;
 
@@ -228,6 +232,7 @@ public class PogoController : MonoBehaviour
         rb.centerOfMass = rb.transform.InverseTransformPoint(centreOfMass.transform.position);
 
         StartCoroutine(ResetSpring());
+        OnJump.Invoke();
     }
 
     //The Pogo is stabilised by trending towards the "gravity" direction at this moment, can be and should be affected by world gravity or an area's custom gravity
@@ -236,23 +241,24 @@ public class PogoController : MonoBehaviour
         if (!significantMovement && Time.time-jumpTime>0.7f || CheckIfGrounded() && !jumping)
         {
             // Apply torque to rotate the object towards where "gravity" is at this moment
-            Vector3 torque = -artificalGravityDirection * rotateForce * 0.45f;
+            Vector3 torque = upRightFactor * rotateForce * -artificalGravityDirection;
 
             rb.AddTorque(torque, ForceMode.Force);
         }
         else if(jumping)
         {
-            Vector3 torque = -artificalGravityDirection * rotateForce * 0.15f;
+            Vector3 torque = transform.up * rotateForce * upRightFactor*0.23f;
 
             rb.AddTorque(torque, ForceMode.Force);
         }
         else
         {
-            Vector3 torque = -artificalGravityDirection * rotateForce * 0.15f;
+           // Vector3 torque = -artificalGravityDirection * rotateForce * upRightFactor*0.23f;
+           // rb.AddTorque(torque, ForceMode.Force);
         }
     }
 
-    private void ResetJump()
+    private void ResetJump() 
     {
         jumping = false;
         rb.drag = normalDrag;

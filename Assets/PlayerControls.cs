@@ -76,7 +76,16 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": ""SpinDash"",
                     ""type"": ""Button"",
                     ""id"": ""dc6abc1d-ff88-42e3-bd97-e6a07f13b07b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Trigger"",
+                    ""type"": ""Button"",
+                    ""id"": ""53626880-8435-499a-a31c-14ae66e9b71a"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -236,6 +245,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""Vertical"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""80abc365-65a9-4e86-8456-306f1049527f"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Trigger"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -250,6 +270,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_FreeLook = m_Player.FindAction("FreeLook", throwIfNotFound: true);
         m_Player_Action = m_Player.FindAction("Action", throwIfNotFound: true);
         m_Player_SpinDash = m_Player.FindAction("SpinDash", throwIfNotFound: true);
+        m_Player_Trigger = m_Player.FindAction("Trigger", throwIfNotFound: true);
     }
 
     ~@PlayerControls()
@@ -322,6 +343,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_FreeLook;
     private readonly InputAction m_Player_Action;
     private readonly InputAction m_Player_SpinDash;
+    private readonly InputAction m_Player_Trigger;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -332,6 +354,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @FreeLook => m_Wrapper.m_Player_FreeLook;
         public InputAction @Action => m_Wrapper.m_Player_Action;
         public InputAction @SpinDash => m_Wrapper.m_Player_SpinDash;
+        public InputAction @Trigger => m_Wrapper.m_Player_Trigger;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -359,6 +382,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SpinDash.started += instance.OnSpinDash;
             @SpinDash.performed += instance.OnSpinDash;
             @SpinDash.canceled += instance.OnSpinDash;
+            @Trigger.started += instance.OnTrigger;
+            @Trigger.performed += instance.OnTrigger;
+            @Trigger.canceled += instance.OnTrigger;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -381,6 +407,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @SpinDash.started -= instance.OnSpinDash;
             @SpinDash.performed -= instance.OnSpinDash;
             @SpinDash.canceled -= instance.OnSpinDash;
+            @Trigger.started -= instance.OnTrigger;
+            @Trigger.performed -= instance.OnTrigger;
+            @Trigger.canceled -= instance.OnTrigger;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -406,5 +435,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnFreeLook(InputAction.CallbackContext context);
         void OnAction(InputAction.CallbackContext context);
         void OnSpinDash(InputAction.CallbackContext context);
+        void OnTrigger(InputAction.CallbackContext context);
     }
 }

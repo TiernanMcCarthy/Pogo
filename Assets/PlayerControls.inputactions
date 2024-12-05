@@ -54,7 +54,16 @@
                     "name": "SpinDash",
                     "type": "Button",
                     "id": "dc6abc1d-ff88-42e3-bd97-e6a07f13b07b",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Trigger",
+                    "type": "Button",
+                    "id": "53626880-8435-499a-a31c-14ae66e9b71a",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -212,6 +221,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80abc365-65a9-4e86-8456-306f1049527f",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Trigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
