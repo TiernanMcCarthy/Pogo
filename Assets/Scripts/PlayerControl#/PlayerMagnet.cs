@@ -25,7 +25,9 @@ public class PlayerMagnet : MonoBehaviour
     private Transform grabPosition;
 
     [SerializeField]
-    private Rigidbody pogo;
+    private Rigidbody rbPogo;
+    [SerializeField]
+    private PogoController pogo;
 
 
     private PlayerControls inputActions;
@@ -51,6 +53,8 @@ public class PlayerMagnet : MonoBehaviour
         magnetCollider.transform.localPosition=magnetPosition.localPosition + magnetPosition.up*magnetDistance/2;
         magnetCollider.transform.localScale = new Vector3(magnetCollider.transform.localScale.x, magnetDistance, magnetCollider.transform.localScale.z);
         magnetPhysicalDistance = magnetCollider.transform.localScale.y;
+
+        pogo.OnJump.AddListener(Jumping);
     }
 
     private void ManageInputs()
@@ -64,12 +68,19 @@ public class PlayerMagnet : MonoBehaviour
         ManageInputs();
     }
 
+    private void Jumping()
+    {
+        if(grabbedObject!=null)
+        {
+            grabbedObject.velocity += rbPogo.velocity;
+        }
+    }
     private void MagnetiseObject()
     {
         if(grabbedObject != null) //No Grabbed Object
         {
             //nf "next frame position" for these forces
-            Vector3 nfGrabPosition = grabPosition.position + pogo.velocity * Time.fixedDeltaTime;
+            Vector3 nfGrabPosition = grabPosition.position + rbPogo.velocity * Time.fixedDeltaTime;
             if (Vector3.Distance(grabbedObject.transform.position, grabPosition.position) > 0.18f) //At distance we want a lighter force to pull the object to the rest point
             {
                 grabbedObject.AddForce(magnetForce * grabForce * (nfGrabPosition - grabbedObject.transform.position), ForceMode.VelocityChange);
