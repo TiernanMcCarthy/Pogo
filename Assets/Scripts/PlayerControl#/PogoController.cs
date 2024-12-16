@@ -28,6 +28,7 @@ public class PogoController : MonoBehaviour
     //Drag is different whilst on the ground and whilst the spring is readying for a jump
     //Higher drag makes the pogo more stable and allows for the player to land and jump more smoothly in quick succession
     [SerializeField] private float normalDrag;
+    [SerializeField] private float airTimeDrag;
     [SerializeField] private float jumpingDrag;
     [SerializeField] private float angularDrag = 0.05f;
     [SerializeField] private float groundedAngularDragMultiplier = 3.0f;
@@ -227,9 +228,10 @@ public class PogoController : MonoBehaviour
         {
             dir = transform.up * highestJump;
         }
-
+        rb.drag = airTimeDrag;
         rb.AddForce(dir, ForceMode.Acceleration);
         rb.centerOfMass = rb.transform.InverseTransformPoint(centreOfMass.transform.position);
+        jumping = false;
 
         StartCoroutine(ResetSpring());
         OnJump.Invoke();
@@ -286,13 +288,18 @@ public class PogoController : MonoBehaviour
     private bool CheckIfGrounded()
     {
         RaycastHit hit;
-
         // Cast ray down to detect the terrain or surface below the player
         if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*1.45f))
         {
             lastGroundTime = Time.time;
+            if (!jumping)
+            {
+                rb.drag = normalDrag;
+            }
             return true;
         }
+
+        rb.drag = airTimeDrag;
 
         return false;
     }
@@ -379,6 +386,7 @@ public class PogoController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        CheckIfGrounded();
         rb.centerOfMass = rb.transform.InverseTransformPoint(centreOfMass.transform.position);
         CheckModifiers();
         RotatePogo();
