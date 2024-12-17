@@ -8,11 +8,25 @@ public class Spinner : MonoBehaviour
 
     [SerializeField] private Vector3 rotationAxis;
 
+    [SerializeField] private bool useRigidBody = false;
+
+    [SerializeField] private bool staticPos;
+
     private Vector3 rotations;
+
+    private Rigidbody rb;
+
+    private Vector3 holdPosition;
     // Start is called before the first frame update
     void Start()
     {
         rotations = transform.rotation.eulerAngles;
+        if(useRigidBody)
+        {
+            rb = gameObject.GetComponent<Rigidbody>();
+        }
+
+        holdPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -23,7 +37,19 @@ public class Spinner : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rotations += rotationAxis.normalized * rotateSpeed;
-        transform.localRotation = Quaternion.Euler(rotations);
+        if (useRigidBody)
+        {
+            rb.AddTorque(rotationAxis * rotateSpeed);
+        }
+        else
+        {
+            rotations += rotationAxis.normalized * rotateSpeed;
+            transform.localRotation = Quaternion.Euler(rotations);
+        }
+
+        if(staticPos)
+        {
+            transform.position = holdPosition;
+        }
     }
 }
