@@ -103,82 +103,9 @@ public class PogoController : MonoBehaviour
         Debug.Log(slopeAngle);
         return slopeAngle;
     }
-    /* WORKS ISH
-    private void RotatePogo()
-    {
-        // Get input dirs
-        Vector2 inputs = new Vector2(inputActions.Player.Horizontal.ReadValue<float>(),inputActions.Player.Vertical.ReadValue<float>());
-
-        // Calculate the desired movement direction relative to the camera
-
-        Vector3 forward = activeCamera.forward;
-        Vector3 right = activeCamera.right;
-        Vector3 up = activeCamera.up;
-
-        Vector3 gravityDirection = artificalGravityDirection.normalized;
-        // Ensure the player moves without any respect to where the camera is vertically
-        forward.y = 0;
-        right.y = 0;
-        up.y = 0;
-
-        forward.Normalize();
-        right.Normalize();
-
-        // Calculate the movement direction based on input
-        Vector3 moveDirection = forward * inputs.y + right * inputs.x;
-        
-        // Apply torque to rotate the object around the opposite of the gravity normal
-        Vector3 torque = Vector3.Cross(gravityDirection, moveDirection) * rotateForce;
-
-        // Rotate the pogo with torque, instant velocity means the control is responsive
-        rb.AddTorque(torque, ForceMode.VelocityChange);
-
-        rb.centerOfMass = rb.transform.InverseTransformPoint(centreOfMass.transform.position);
-    }
-    ORIGINAL
-
-     private void RotatePogo()
-{
-    // Get input dirs
-    Vector2 inputs = new Vector2(inputActions.Player.Horizontal.ReadValue<float>(),inputActions.Player.Vertical.ReadValue<float>());
-
-    // Calculate the desired movement direction relative to the camera
-
-    Vector3 forward = activeCamera.forward;  
-    Vector3 right = activeCamera.right;  
-
-    // Ensure the player moves without any respect to where the camera is vertically
-    forward.y = 0;
-    right.y = 0;
-
-    forward.Normalize();
-    right.Normalize();
-
-    // Calculate the movement direction based on input
-    Vector3 moveDirection = forward * inputs.y + right * inputs.x;
-    
-    // Apply torque to rotate the object around its up-axis (Y-axis)
-    Vector3 torque = Vector3.Cross(Vector3.up, moveDirection) * rotateForce;
-
-    // Rotate the pogo with torque, instant velocity means the control is responsive
-    rb.AddTorque(torque, ForceMode.VelocityChange);
-
-    rb.centerOfMass = rb.transform.InverseTransformPoint(centreOfMass.transform.position);
-}*/ 
-
 
     private void RotatePogo()
     {
-        /*
-        if(springReady && jumping==false && CheckIfGrounded())
-        {
-            rb.drag = normalDrag * 3;
-            rb.angularDrag = angularDrag * groundedAngularDragMultiplier;
-        }
-        else
-        {
-            rb.angularDrag = angularDrag;
-        }*/
         // Get input directions
         Vector2 inputs = new Vector2(inputActions.Player.Horizontal.ReadValue<float>(), inputActions.Player.Vertical.ReadValue<float>());
 
@@ -393,6 +320,12 @@ public class PogoController : MonoBehaviour
         NewPogoJump();
         Stabilise();
         ApplyGravity();
+    }
+
+    public void ResetPlayerVelocity()
+    {
+        rb.velocity= Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 
     private void OnTriggerEnter(Collider col)

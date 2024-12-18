@@ -15,7 +15,8 @@ public class GravityManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(this);
+            GameObject dontDestroyObject = gameObject.GetDeepestParent();
+            DontDestroyOnLoad(dontDestroyObject);
         }
         else
         {

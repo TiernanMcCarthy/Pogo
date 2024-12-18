@@ -26,19 +26,33 @@ public class GravityZone : ZoneBehaviour
 #endif
 
 
-
-    protected override void OnRigidBodyAdded(Rigidbody rigid)
+    protected override void FirstEntry(ColliderRigidbodyReference rigid)
     {
-        if(PlayerManagement.player.gameObject==rigid.gameObject)
+        rigid.rigid.velocity = rigid.rigid.velocity * 0.5f;
+        Vector3 dir = rigid.rigid.transform.position - transform.position;
+        rigid.rigid.AddForce(gravityOverride.magnitude *-dir.normalized*10);
+    }
+    protected override void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
+    {
+        if(PlayerManagement.player.gameObject== rigidContainer.rigid.gameObject)
         {
-            rigidBodiesInZone.Remove(rigid);
+            //rigidBodiesInZone.Remove(rigid);
             PlayerManagement.player.SetGravity(gravityOverride);
         }
-        rigid.useGravity = false;
+        rigidContainer.rigid.useGravity = false;
     }
 
-    protected override void OnRigidBodyRemoved(Rigidbody rigid)
+    protected override void OnRigidBodyRemoved(ColliderRigidbodyReference rigidContainer)
     {
+        if(rigidContainer.rigid.gameObject!=PlayerManagement.player.gameObject)
+        {
+            rigidContainer.rigid.useGravity = true;
+        }
+        else
+        {
+            PlayerManagement.player.SetGravity(GravityManager.sceneGravity);
+        }
+        /*
         if (rigid.gameObject != PlayerManagement.player.gameObject)
         {
             rigid.useGravity = true;
@@ -47,7 +61,7 @@ public class GravityZone : ZoneBehaviour
         {
             // work something out better, maybe we'll have mixed triggerZones?
             PlayerManagement.player.SetGravity(GravityManager.sceneGravity);
-        }
+        }*/
     }
 
     public void Update()
@@ -57,9 +71,12 @@ public class GravityZone : ZoneBehaviour
 
     public void FixedUpdate()
     {
-        foreach(Rigidbody rigid in rigidBodiesInZone)
+        foreach(ColliderRigidbodyReference rigid in rigidColliders)
         {
-            rigid.AddForce(gravityOverride);
+            if (PlayerManagement.player.gameObject != rigid.rigid.gameObject)
+            {
+                rigid.rigid.AddForce(gravityOverride);
+            }
         }
     }
 
