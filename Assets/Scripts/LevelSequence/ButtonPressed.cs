@@ -2,27 +2,42 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class ButtonsPressed : MonoBehaviour, ITracker
+public class ButtonsPressed : Tracker
 {
     [SerializeField]
-    //private List<>
-    public event Action OnTrackerCompleted;
+    private List<SceneButton> buttonList;
 
     public bool IsComplete()
     {
-        return false;
+        foreach (SceneButton button in buttonList)
+        {
+            if(!button.isPressed)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public override void ProcessTracker()
     {
-
+        throw new NotImplementedException();
     }
 
-    // Update is called once per frame
-    void Update()
+    public override bool CheckCompletion()
     {
+        foreach (SceneButton button in buttonList)
+        {
+            if (!button.isPressed)
+            {
+                return false;
+            }
+        }
 
+        return true;
     }
+
 }

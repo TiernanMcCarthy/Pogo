@@ -9,23 +9,53 @@ using UnityEngine.Events;
 public class Sequence : MonoBehaviour
 {
     [SerializeField]
-    private List<Sequence> nextSequences;
+    private List<Sequence> nextSequence;
 
     [SerializeField]
-    private List<ITracker> trackersToComplete;
+    private List<Tracker> trackersToComplete;
+
+    [SerializeField]
+    private bool isActive = false;
+
+    [SerializeField]
+    private UnityEvent startActions;
 
     [SerializeField]
     private UnityEvent endActions;  
 
-    // Start is called before the first frame update
-    void Start()
+    
+    public void ActivateSequence()
     {
-        
+        isActive=true;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void CheckTrackers()
     {
-        
+        int completeTrackers = 0;
+        for (int i = 0; i < trackersToComplete.Count; ++i)
+        {
+            if (trackersToComplete[i].ExecuteEveryFrame)
+            {
+                trackersToComplete[i].CheckCompletion();
+            }
+        }
+    }
+
+    private void ProcessTrackers()
+    {
+        for (int i = 0; i < trackersToComplete.Count; ++i)
+        {
+            trackersToComplete[i].ProcessTracker();
+        }
+    }
+
+
+    public void Update()
+    {
+        if(isActive)
+        {
+            ProcessTrackers();
+            CheckTrackers();
+        }
     }
 }

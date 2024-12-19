@@ -20,7 +20,7 @@ public class SceneButton : LevelComponent
     private Rigidbody rb;
 
     [SerializeField]
-    private bool isPressed;
+    public bool isPressed {  get; private set; }
 
     [SerializeField]
     private LayerMask ignoreMask;
