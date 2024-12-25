@@ -2,8 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Simple manager for objects to fetch and manage gravity from
+/// </summary>
 public class GravityManager : MonoBehaviour
 {
+    /// <summary>
+    /// Gravity can be managed by a gravity manager instead of the normal physics, this lets us manipulate gravity in silly ways
+    /// </summary>
     public static Vector3 sceneGravity;
 
     public static GravityManager instance;

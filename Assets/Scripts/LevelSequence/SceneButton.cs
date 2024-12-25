@@ -22,6 +22,9 @@ public class SceneButton : LevelComponent
     [SerializeField]
     public bool isPressed {  get; private set; }
 
+    [SerializeField]private bool useSceneGravity;
+    [SerializeField] private bool ignoreGravity;
+
     [SerializeField]
     private LayerMask ignoreMask;
 
@@ -35,6 +38,10 @@ public class SceneButton : LevelComponent
     void Start()
     {
         rb= GetComponent<Rigidbody>();
+        if(useSceneGravity || ignoreGravity)
+        {
+            rb.useGravity = false;
+        }
     }
 
     // Update is called once per frame
@@ -77,6 +84,15 @@ public class SceneButton : LevelComponent
 
     private void FixedUpdate()
     {
+        if (useSceneGravity && !ignoreGravity)
+        {
+            rb.AddForce(GravityManager.sceneGravity);
+        }
         FloatButton();
+        Vector3 relativeVelocity = transform.InverseTransformDirection(rb.velocity);
+        float totalforce = relativeVelocity.magnitude;
+        relativeVelocity.x = 0;
+        relativeVelocity.z = 0;
+        rb.velocity = relativeVelocity;
     }
 }

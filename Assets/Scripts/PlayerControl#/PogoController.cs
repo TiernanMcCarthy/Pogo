@@ -96,7 +96,7 @@ public class PogoController : MonoBehaviour
     {
         RaycastHit hit;
         float slopeAngle = 0;
-        if(Physics.Raycast(springTransform.position, springTransform.up * -1, out hit, springHeight * 1.2f))
+        if(Physics.Raycast(springTransform.position, springTransform.up * -1, out hit, springHeight * 1.2f,~0, QueryTriggerInteraction.Ignore))
         {
            slopeAngle = Vector3.Angle(hit.normal, -artificalGravityDirection);
         }
@@ -216,7 +216,7 @@ public class PogoController : MonoBehaviour
     {
         RaycastHit hit;
         // Cast ray down to detect the terrain or surface below the player
-        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*1.45f))
+        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*1.45f,~0,QueryTriggerInteraction.Ignore))
         {
             lastGroundTime = Time.time;
             if (!jumping)
