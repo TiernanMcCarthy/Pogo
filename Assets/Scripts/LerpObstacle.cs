@@ -7,12 +7,16 @@ public class LerpObstacle : MonoBehaviour
 {
     [SerializeField] private float speed;
 
-    [SerializeField]private float lerpPos = 0;
+    [SerializeField] private float lerpPos = 0;
 
-    public bool isMoving {  get; private set; }
+    [SerializeField] private int direction = 1;
+
+    [SerializeField] private bool m_isMoving = true;
+    public bool isMoving { get { return m_isMoving; } private set { m_isMoving = value; } }
 
     [SerializeField]private Transform targetA;
     [SerializeField] private Transform targetB;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +47,13 @@ public class LerpObstacle : MonoBehaviour
     {
         if(isMoving)
         {
-            
+            transform.position= Vector3.Lerp(targetA.position,targetB.position,lerpPos);
+            lerpPos += speed *direction* Time.deltaTime;
+            if(lerpPos>1 || lerpPos <0)
+            {
+                direction *= -1;
+                lerpPos=Mathf.RoundToInt(lerpPos);
+            }
         }
     }
 

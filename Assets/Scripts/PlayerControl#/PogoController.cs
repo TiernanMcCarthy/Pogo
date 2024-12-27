@@ -100,7 +100,6 @@ public class PogoController : MonoBehaviour
         {
            slopeAngle = Vector3.Angle(hit.normal, -artificalGravityDirection);
         }
-        Debug.Log(slopeAngle);
         return slopeAngle;
     }
 

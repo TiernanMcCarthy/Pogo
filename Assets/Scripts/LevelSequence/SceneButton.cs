@@ -89,10 +89,11 @@ public class SceneButton : LevelComponent
             rb.AddForce(GravityManager.sceneGravity);
         }
         FloatButton();
-        Vector3 relativeVelocity = transform.InverseTransformDirection(rb.velocity);
-        float totalforce = relativeVelocity.magnitude;
-        relativeVelocity.x = 0;
-        relativeVelocity.z = 0;
-        rb.velocity = relativeVelocity;
+        //Vector3 relativeVelocity = transform.InverseTransformDirection(rb.velocity);
+        transform.localPosition = new Vector3(0, transform.localPosition.y, 0);
+      //  float totalforce = relativeVelocity.magnitude;
+        //relativeVelocity.x = 0;
+        //relativeVelocity.z = 0;
+       // rb.velocity = relativeVelocity;
     }
 }

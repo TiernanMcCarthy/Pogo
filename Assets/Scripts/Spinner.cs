@@ -51,5 +51,8 @@ public class Spinner : MonoBehaviour
         {
             transform.position = holdPosition;
         }
+        Vector3 localrot = transform.localRotation.eulerAngles;
+        localrot.x *= rotationAxis.x; localrot.y *= rotationAxis.y; localrot.z *= rotationAxis.z;
+        transform.localRotation=Quaternion.Euler(localrot);
     }
 }
