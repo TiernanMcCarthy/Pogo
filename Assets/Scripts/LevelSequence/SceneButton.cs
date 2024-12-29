@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 public class SceneButton : LevelComponent
 {
@@ -20,7 +21,7 @@ public class SceneButton : LevelComponent
     private Rigidbody rb;
 
     [SerializeField]
-    public bool isPressed {  get; private set; }
+    public bool isPressed;
 
     [SerializeField]private bool useSceneGravity;
     [SerializeField] private bool ignoreGravity;
@@ -34,6 +35,7 @@ public class SceneButton : LevelComponent
     [SerializeField] private float springStrength;
     [SerializeField] private float springDamper;
 
+    private bool waitForFloat = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,8 +44,16 @@ public class SceneButton : LevelComponent
         {
             rb.useGravity = false;
         }
+
+        StartCoroutine(DisableForXTime(5));
     }
 
+
+    private IEnumerator DisableForXTime(float disableTime)
+    {
+        yield return new WaitForSeconds(disableTime);
+        waitForFloat = false;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -54,9 +64,8 @@ public class SceneButton : LevelComponent
     {
         RaycastHit hit;
 
-        LayerMask avoid = ~ignoreMask;
         // Cast ray down
-        if (Physics.Raycast(groundCheck.position, transform.up * -1, out hit, floatHeight))
+        if (Physics.Raycast(groundCheck.position, transform.up * -1, out hit, floatHeight,~ignoreMask))
         {
             // Get the distance between the button and the surface
             float currentHeight = hit.distance;
@@ -71,12 +80,21 @@ public class SceneButton : LevelComponent
 
             rb.AddForce(transform.up * springForce, ForceMode.Acceleration);
 
-            if(currentHeight<floatHeight*0.1f)
+            if(currentHeight<floatHeight*0.1f && !waitForFloat)
             {
+                if(!isPressed)
+                {
+                    OnPressed.Invoke();
+                    Debug.Log("We're pressed?");
+                }
                 isPressed = true;
             }
             else
             {
+                if(isPressed)
+                {
+                    OnReleased.Invoke();
+                }
                 isPressed = false;
             }
         }

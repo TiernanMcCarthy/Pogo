@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LerpObstacle : MonoBehaviour
+public class LerpObstacle : Obstacle
 {
     [SerializeField] private float speed;
 
