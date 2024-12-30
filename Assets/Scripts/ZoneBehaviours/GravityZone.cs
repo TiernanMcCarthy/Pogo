@@ -28,9 +28,9 @@ public class GravityZone : ZoneBehaviour
 
     protected override void FirstEntry(ColliderRigidbodyReference rigid)
     {
-        rigid.rigid.velocity = rigid.rigid.velocity * 0.5f;
+        rigid.rigid.velocity = rigid.rigid.velocity * 0.9f;
         Vector3 dir = rigid.rigid.transform.position - transform.position;
-        rigid.rigid.AddForce(gravityOverride.magnitude *-dir.normalized*10);
+        rigid.rigid.AddForce(gravityOverride.magnitude *-dir.normalized*2);
     }
     protected override void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
     {

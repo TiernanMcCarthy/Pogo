@@ -85,7 +85,6 @@ public class SceneButton : LevelComponent
                 if(!isPressed)
                 {
                     OnPressed.Invoke();
-                    Debug.Log("We're pressed?");
                 }
                 isPressed = true;
             }
