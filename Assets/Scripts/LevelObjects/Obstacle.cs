@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Obstacle : MonoBehaviour
+public class Obstacle : MonoBehaviour
 {
     
-
     protected virtual void KillPlayer()
     {
         SpawnManager.instance.SpawnPlayer();
