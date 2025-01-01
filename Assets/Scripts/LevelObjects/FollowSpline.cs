@@ -12,14 +12,13 @@ public enum MovementBehaviours
 }
 
 [RequireComponent(typeof(SplineContainer))]
-[RequireComponent (typeof(Rigidbody))]
 public class FollowSpline : MonoBehaviour
 {
     private SplineContainer splines;
 
     [SerializeField] private MovementBehaviours movementBehaviours;
 
-    private Rigidbody rigid;
+    [SerializeField]private Rigidbody rigid;
 
     [SerializeField] private float speed;
 
@@ -28,7 +27,7 @@ public class FollowSpline : MonoBehaviour
     void Start()
     {
         splines = GetComponent<SplineContainer>();
-        rigid= GetComponent<Rigidbody>();
+       // rigid= GetComponent<Rigidbody>();
         knotTarget = transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
     } 
 
@@ -47,18 +46,22 @@ public class FollowSpline : MonoBehaviour
     {
         splineIndex = 0;
         knotIndex = 0;
+
+        knotTarget = transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
     }
     void EvaluateNextTarget()
     {
         knotIndex++;
-        if (knotIndex >= splines[splineIndex].Knots.Count())
+        if (splineIndex > splines.Splines.Count()-1)
+        {
+            ResetSpline();
+            return;
+        }
+
+        if (knotIndex >= splines[splineIndex].Knots.Count()-1)
         {
             knotIndex = 0;
             splineIndex++;
-        }
-        if(splineIndex>splines.Splines.Count())
-        {
-            ResetSpline();
         }
         knotTarget = transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
     }
@@ -66,8 +69,8 @@ public class FollowSpline : MonoBehaviour
     {
         if (isActive)
         {
-            transform.position+=(knotTarget - transform.position).normalized * speed;
-            if (Vector3.Distance(transform.position, knotTarget) < 0.2f)
+            rigid.transform.position+=(knotTarget- rigid.transform.position).normalized * speed;
+            if (Vector3.Distance(rigid.transform.position, knotTarget) < 0.2f)
             {
                 EvaluateNextTarget();
             }
