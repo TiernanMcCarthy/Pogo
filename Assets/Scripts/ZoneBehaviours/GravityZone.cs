@@ -52,16 +52,6 @@ public class GravityZone : ZoneBehaviour
         {
             PlayerManagement.player.SetGravity(GravityManager.sceneGravity);
         }
-        /*
-        if (rigid.gameObject != PlayerManagement.player.gameObject)
-        {
-            rigid.useGravity = true;
-        }
-        else
-        {
-            // work something out better, maybe we'll have mixed triggerZones?
-            PlayerManagement.player.SetGravity(GravityManager.sceneGravity);
-        }*/
     }
 
     public void Update()

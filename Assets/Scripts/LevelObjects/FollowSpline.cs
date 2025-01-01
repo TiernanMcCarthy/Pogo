@@ -12,9 +12,9 @@ public enum MovementBehaviours
 }
 
 [RequireComponent(typeof(SplineContainer))]
-public class FollowSpline : MonoBehaviour
+public class FollowSpline : ZoneBehaviour
 {
-    private SplineContainer splines;
+    [SerializeField] private SplineContainer splines;
 
     [SerializeField] private MovementBehaviours movementBehaviours;
 
@@ -26,11 +26,22 @@ public class FollowSpline : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        splines = GetComponent<SplineContainer>();
+        base.Start();
+        previousPos = transform.position;
+        //splines = GetComponent<SplineContainer>();
        // rigid= GetComponent<Rigidbody>();
-        knotTarget = transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
-    } 
+        knotTarget = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
+        
+    }
+    protected override void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
+    {
+        
+    }
 
+    protected override void OnRigidBodyRemoved(ColliderRigidbodyReference rigidContainer)
+    {
+        
+    }
     // Update is called once per frame
     void Update()
     {
@@ -47,7 +58,7 @@ public class FollowSpline : MonoBehaviour
         splineIndex = 0;
         knotIndex = 0;
 
-        knotTarget = transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
+        knotTarget = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
     }
     void EvaluateNextTarget()
     {
@@ -63,17 +74,26 @@ public class FollowSpline : MonoBehaviour
             knotIndex = 0;
             splineIndex++;
         }
-        knotTarget = transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
+        knotTarget = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
     }
+    Vector3 previousPos;
     private void FixedUpdate()
     {
         if (isActive)
         {
-            rigid.transform.position+=(knotTarget- rigid.transform.position).normalized * speed;
+            rigid.velocity = (knotTarget - rigid.transform.position).normalized * speed;
+            //rigid.transform.position+=(knotTarget- rigid.transform.position).normalized * speed;
+            //rigid.MovePosition(previousPos + (knotTarget - rigid.transform.position).normalized * speed);
             if (Vector3.Distance(rigid.transform.position, knotTarget) < 0.2f)
             {
                 EvaluateNextTarget();
             }
+
+            foreach(ColliderRigidbodyReference colliderRigidbody in rigidColliders)
+            {
+               // colliderRigidbody.rigid.AddForce((knotTarget - rigid.transform.position).normalized * speed);
+            }
+            previousPos = transform.position;
         }
     }
 }
