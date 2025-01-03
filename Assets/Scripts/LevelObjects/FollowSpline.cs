@@ -8,40 +8,32 @@ public enum MovementBehaviours
 {
     LOOP,
     STOP,
-    REVERSE
+    REVERSE,
+    INSTANTRESET
 }
 
-[RequireComponent(typeof(SplineContainer))]
-public class FollowSpline : ZoneBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class FollowSpline : MonoBehaviour
 {
     [SerializeField] private SplineContainer splines;
 
-    [SerializeField] private MovementBehaviours movementBehaviours;
+    [SerializeField] private MovementBehaviours movementBehaviour;
 
     [SerializeField]private Rigidbody rigid;
 
     [SerializeField] private float speed;
 
     [SerializeField] private bool isActive = true;
+
+    [SerializeField] private float waitBetweenResets = 0;
     // Start is called before the first frame update
     void Start()
     {
-        base.Start();
         previousPos = transform.position;
-        //splines = GetComponent<SplineContainer>();
-       // rigid= GetComponent<Rigidbody>();
         knotTarget = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
         
     }
-    protected override void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
-    {
-        
-    }
 
-    protected override void OnRigidBodyRemoved(ColliderRigidbodyReference rigidContainer)
-    {
-        
-    }
     // Update is called once per frame
     void Update()
     {
@@ -53,26 +45,40 @@ public class FollowSpline : ZoneBehaviour
 
     Vector3 knotTarget = Vector3.zero;
 
-    void ResetSpline()
+    IEnumerator ResetSpline(float waitTime)
     {
-        splineIndex = 0;
-        knotIndex = 0;
+        isActive = false;
+        rigid.isKinematic = true;
+        yield return new WaitForSeconds(waitTime);
+        isActive= true;
+        rigid.isKinematic= false;
+        if(movementBehaviour==MovementBehaviours.LOOP)
+        {
+            splineIndex = 0;
+            knotIndex = 0;
+        }
+        else if (movementBehaviour == MovementBehaviours.INSTANTRESET)
+        {
+            splineIndex = 0;
+            knotIndex = 0;
+            transform.position = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
+        }
 
         knotTarget = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
     }
     void EvaluateNextTarget()
     {
         knotIndex++;
-        if (splineIndex > splines.Splines.Count()-1)
-        {
-            ResetSpline();
-            return;
-        }
 
-        if (knotIndex >= splines[splineIndex].Knots.Count()-1)
+        if (knotIndex > splines[splineIndex].Knots.Count()-1)
         {
             knotIndex = 0;
             splineIndex++;
+        }
+        if (splineIndex > splines.Splines.Count() - 1)
+        {
+            StartCoroutine(ResetSpline(waitBetweenResets));
+            return;
         }
         knotTarget = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
     }
@@ -89,10 +95,6 @@ public class FollowSpline : ZoneBehaviour
                 EvaluateNextTarget();
             }
 
-            foreach(ColliderRigidbodyReference colliderRigidbody in rigidColliders)
-            {
-               // colliderRigidbody.rigid.AddForce((knotTarget - rigid.transform.position).normalized * speed);
-            }
             previousPos = transform.position;
         }
     }

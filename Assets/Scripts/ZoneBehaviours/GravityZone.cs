@@ -6,6 +6,7 @@ using UnityEngine;
 public class GravityZone : ZoneBehaviour
 {
     [SerializeField] private Vector3 gravityOverride;
+    [SerializeField] private bool haltVelocity = false;
 
 #if UNITY_EDITOR
     [Header("EditorOnly")]
@@ -31,6 +32,11 @@ public class GravityZone : ZoneBehaviour
         rigid.rigid.velocity = rigid.rigid.velocity * 0.9f;
         Vector3 dir = rigid.rigid.transform.position - transform.position;
         rigid.rigid.AddForce(gravityOverride.magnitude *-dir.normalized*2);
+
+        if(haltVelocity)
+        {
+            rigid.rigid.velocity = Vector3.zero;
+        }
     }
     protected override void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
     {
