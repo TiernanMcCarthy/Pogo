@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb40ad2eae36354190e8f323f151f17, type: 3}
+  m_Name: MetalRigid
+  m_EditorClassIdentifier: 
+  genericSounds:
+  - {fileID: 8300000, guid: 6ffb1e731ed3f5942ae3475b05aee329, type: 3}
+  - {fileID: 8300000, guid: 991e358343f4bea41945a83cb7de0d41, type: 3}
+  - {fileID: 8300000, guid: abda0ec050ca85646a3d328b3a5419bb, type: 3}
+  - {fileID: 8300000, guid: 9fd9c45e101211546a20b539ad2034b3, type: 3}
+  destructionSounds:
+  - {fileID: 8300000, guid: 9fd9c45e101211546a20b539ad2034b3, type: 3}
+  genericMultiplier: 0.5
+  destructionMultiplier: 1
