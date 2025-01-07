@@ -7,13 +7,16 @@ public class Door : MonoBehaviour , Actionable
 
     private Vector3 startPosition;
 
+    private Vector3 targetPos;
+
     [SerializeField] private Transform endPoint;
 
     [SerializeField] private Transform doorMesh;
 
     [SerializeField] private float moveSpeed = 5.0f;
 
-    private Vector3 targetPos;
+    [SerializeField] private AudioSource doorAudioEmitter;
+
     public void FailAction()
     {
         targetPos = startPosition;
@@ -40,11 +43,16 @@ public class Door : MonoBehaviour , Actionable
     {
         if(Vector3.Distance(doorMesh.position, targetPos)>0.1f)
         {
+            if(!doorAudioEmitter.isPlaying)
+            {
+                doorAudioEmitter.Play();
+            }
             Vector3 direction = (targetPos - doorMesh.position).normalized;
             doorMesh.transform.position += direction * Time.deltaTime * moveSpeed;
         }
         else
         {
+            doorAudioEmitter.Stop();
             doorMesh.transform.position = targetPos;
         }
     }

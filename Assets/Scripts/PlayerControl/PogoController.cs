@@ -44,6 +44,17 @@ public class PogoController : MonoBehaviour
 
     [SerializeField] private float timeBetweenJumps;
 
+    #region SpringSoundManagement
+
+    [SerializeField] private AudioSource springSource;
+    [SerializeField] private float springCompressVolume = 0.4f;
+    [SerializeField] private AudioClip springCompressSound;
+    [SerializeField] private float springReleaseVolume = 0.4f;
+    [SerializeField] private AudioClip springReleaseSound;
+
+
+    #endregion
+
     #region Local Private Variables
 
     //States
@@ -159,6 +170,10 @@ public class PogoController : MonoBehaviour
         rb.centerOfMass = rb.transform.InverseTransformPoint(centreOfMass.transform.position);
         jumping = false;
 
+        //change sound to spring release
+        springSource.clip = springReleaseSound;
+        springSource.Play();
+
         StartCoroutine(ResetSpring());
         OnJump.Invoke();
     }
@@ -188,6 +203,7 @@ public class PogoController : MonoBehaviour
 
     private void ResetJump() 
     {
+        springSource.Stop();
         jumping = false;
         rb.drag = normalDrag;
     }
@@ -237,6 +253,10 @@ public class PogoController : MonoBehaviour
             rb.drag = jumpingDrag;
             jumpTime = Time.time;
             springReady = false;
+
+            //play spring jump audio
+            springSource.clip = springCompressSound;
+            springSource.Play();
 
             //Give a bit more grip if we detect a wall of at least 70 degrees against gravity
             if(GetGroundAngleRelativeToGravity()>70)
@@ -308,7 +328,18 @@ public class PogoController : MonoBehaviour
     {
         rb.AddForce(artificalGravityDirection);
     }
-    
+
+    void ManageJumpSounds()
+    {
+        if(jumping)
+        {
+        }
+    }
+
+    private void Update()
+    {
+        ManageJumpSounds();
+    }
     // Update is called once per frame
     void FixedUpdate()
     {

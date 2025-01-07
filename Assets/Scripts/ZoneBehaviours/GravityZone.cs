@@ -35,7 +35,7 @@ public class GravityZone : ZoneBehaviour
 
         if(haltVelocity)
         {
-            rigid.rigid.velocity = Vector3.zero;
+            rigid.rigid.velocity = rigid.rigid.velocity * 0.3f;
         }
     }
     protected override void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
