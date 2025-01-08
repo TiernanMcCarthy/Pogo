@@ -21,8 +21,14 @@ public class Sequence : MonoBehaviour
     private UnityEvent startActions;
 
     [SerializeField]
-    private UnityEvent endActions;  
+    private UnityEvent endActions;
 
+    [SerializeField]
+    private UnityEvent completionActions;
+
+    [SerializeField] private UnityEvent failActions;
+
+    private bool hasCompleted = false;
     
     public void ActivateSequence()
     {
@@ -34,9 +40,23 @@ public class Sequence : MonoBehaviour
         int completeTrackers = 0;
         for (int i = 0; i < trackersToComplete.Count; ++i)
         {
-            if (trackersToComplete[i].ExecuteEveryFrame)
+            if (trackersToComplete[i].ExecutesEveryFrame())
             {
-                trackersToComplete[i].CheckCompletion();
+                if (trackersToComplete[i].CheckCompletion())
+                {
+                    completeTrackers++;
+                }
+            }
+
+            if(completeTrackers==trackersToComplete.Count && !hasCompleted) //Completetion Events are called once upon all trackers being met
+            {
+                completionActions.Invoke();
+                hasCompleted = true;
+            }
+            else if(completeTrackers<trackersToComplete.Count && hasCompleted) //Fail events should only happen when the 
+            {
+                failActions.Invoke();
+                hasCompleted = false;
             }
         }
     }

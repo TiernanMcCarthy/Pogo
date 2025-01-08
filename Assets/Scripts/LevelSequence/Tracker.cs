@@ -5,7 +5,7 @@ public abstract class Tracker :MonoBehaviour
 {
     public bool isComplete {  get; private set; }
 
-    public bool ExecuteEveryFrame {  get; private set; }
+    [SerializeField] private bool executeEveryFrame;
 
     [Space(10,order =100)]
     [SerializeField] private UnityEvent completionEvents;
@@ -17,6 +17,11 @@ public abstract class Tracker :MonoBehaviour
             isComplete = true;
             completionEvents?.Invoke();
         }
+    }
+
+    public bool ExecutesEveryFrame()
+    {
+        return executeEveryFrame;
     }
 
     //Trackers might and can affect the world, they should process if their sequence is active

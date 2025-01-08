@@ -24,7 +24,7 @@ public class ButtonsPressed : Tracker
 
     public override void ProcessTracker()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
     public override bool CheckCompletion()
