@@ -8,7 +8,7 @@ public class SpawnPoint : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(!canBeTriggered)
+        if(!canBeTriggered || other.attachedRigidbody==null)
         {
             return;
         }
