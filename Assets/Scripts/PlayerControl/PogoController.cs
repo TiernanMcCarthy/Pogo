@@ -38,6 +38,9 @@ public class PogoController : MonoBehaviour
     [SerializeField] private float highestJump;
     [SerializeField] private float maxJumpTime;
 
+    //Manages how far from the base of the pogo and the spring that the player can jump with
+    [SerializeField] private float springJumpRange = 1.45f;
+
     //The spring is physically scaled on the y axis to change the pogo height and emulate the spring change
     [SerializeField] private float springHeight;
     [SerializeField] private float minSpringSize;
@@ -231,7 +234,7 @@ public class PogoController : MonoBehaviour
     {
         RaycastHit hit;
         // Cast ray down to detect the terrain or surface below the player
-        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*1.45f,~0,QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*springJumpRange,~0,QueryTriggerInteraction.Ignore))
         {
             lastGroundTime = Time.time;
             if (!jumping)
