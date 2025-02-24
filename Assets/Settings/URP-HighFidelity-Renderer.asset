@@ -14,6 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 1
   m_Shader: {fileID: 4800000, guid: 0f854b35a0cf61a429bd5dcfea30eddd, type: 3}
+--- !u!114 &-4804769765270518817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a69f09a742fdd194eb760c24936dab85, type: 3}
+  m_Name: GrassDataRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  heightMapLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  heightMapMat: {fileID: 2100000, guid: 95d63adac2015d142aac17b9b535fd20, type: 2}
+  computeShader: {fileID: 7200000, guid: 6faaeebb3c9e1434a9a262ec25b9c479, type: 3}
 --- !u!114 &-1878332245247344467
 MonoBehaviour:
   m_ObjectHideFlags: 0
