@@ -106,6 +106,11 @@ public class PogoController : MonoBehaviour
         return artificalGravityDirection;
     }
 
+    public Vector3 GetVelocity()
+    {
+        return rb.velocity;
+    }
+
     private float GetGroundAngleRelativeToGravity()
     {
         RaycastHit hit;
@@ -353,6 +358,11 @@ public class PogoController : MonoBehaviour
         NewPogoJump();
         Stabilise();
         ApplyGravity();
+
+        if (rb.velocity.magnitude > 30)
+        {
+            rb.velocity = rb.velocity.normalized * 50.0f; //max speed (great for credits sequence)
+        }
     }
 
     public void ResetPlayerVelocity()

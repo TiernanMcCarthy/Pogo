@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +26,15 @@ public class PlayerManagement : MonoBehaviour
 {
     public static PogoController player;
 
+
     public static PlayerManagement instance;
+
+    [SerializeField] private CinemachineFreeLook cameraBrain;
+
+    private GameObject belowPogoTarget;
+    private Transform pogoLookat;
+
+    [SerializeField] private float pogoTargetDistance = 5.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -40,13 +49,37 @@ public class PlayerManagement : MonoBehaviour
             Destroy(gameObject);
         }
 
+        cameraBrain= FindObjectOfType<CinemachineFreeLook>();
         player=FindObjectOfType<PogoController>();
+        belowPogoTarget = new GameObject();
+        belowPogoTarget.name = "Camera Target";
+
+        pogoLookat = cameraBrain.GetRig(0).LookAt;
+
+        DontDestroyOnLoad(belowPogoTarget);
+
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetCinematicLookat()
     {
-        
+        cameraBrain.LookAt = belowPogoTarget.transform;
+        cameraBrain.GetRig(0).LookAt = belowPogoTarget.transform;
+        cameraBrain.GetRig(1).LookAt = belowPogoTarget.transform;
+        cameraBrain.GetRig(2).LookAt = belowPogoTarget.transform;
+    }
+
+    public void SetNormalLookat()
+    {
+        cameraBrain.LookAt = pogoLookat;
+        cameraBrain.GetRig(0).LookAt = pogoLookat;
+        cameraBrain.GetRig(1).LookAt = pogoLookat;
+        cameraBrain.GetRig(2).LookAt = pogoLookat;
+    }
+
+    // Update is called once per frame
+    void LateUpdate()
+    {
+        belowPogoTarget.transform.position = player.transform.position + player.GetGravity().normalized * pogoTargetDistance;
     }
 }

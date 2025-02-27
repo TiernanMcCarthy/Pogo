@@ -7,10 +7,11 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     public GameObject oldScene;
+
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(LoadAsyncScene());
+
     }
 
     // Update is called once per frame
@@ -21,6 +22,7 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadAsyncScene()
     {
+        PlayerManagement.instance.SetCinematicLookat();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("Outside");
 
         //oldScene.
@@ -30,8 +32,22 @@ public class SceneLoader : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(40);
+        yield return new WaitForSeconds(15);
+
+
+        Destroy(oldScene.gameObject);
 
          
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.attachedRigidbody != null)
+        {
+            if (other.attachedRigidbody.gameObject == PlayerManagement.player.gameObject)
+            {
+                StartCoroutine(LoadAsyncScene());
+            }
+        }
     }
 }
