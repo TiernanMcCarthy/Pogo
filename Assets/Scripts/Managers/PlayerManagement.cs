@@ -61,6 +61,12 @@ public class PlayerManagement : MonoBehaviour
 
     }
 
+    public void SetCameraPosition(Vector3 position)
+    {
+        cameraBrain.ForceCameraPosition(position, Quaternion.LookRotation(player.transform.forward));
+        cameraBrain.transform.position = position;
+    }
+
     public void SetCinematicLookat()
     {
         cameraBrain.LookAt = belowPogoTarget.transform;

@@ -18,4 +18,9 @@ public class SpawnPoint : MonoBehaviour
             canBeTriggered = false;
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawCube(transform.position, Vector3.one);
+    }
 }

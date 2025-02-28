@@ -41,6 +41,10 @@ public class SpawnManager : MonoBehaviour
             PlayerManagement.player.transform.position = currentSpawnPoint.transform.position;
             PlayerManagement.player.transform.up = -GravityManager.sceneGravity.normalized;
             PlayerManagement.player.ResetPlayerVelocity();
+
+            Vector3 cameraPos = PlayerManagement.player.transform.position + PlayerManagement.player.transform.forward * -5;
+
+            PlayerManagement.instance.SetCameraPosition(cameraPos);
         }
     }
 
