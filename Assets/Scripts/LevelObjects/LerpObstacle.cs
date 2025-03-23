@@ -17,14 +17,23 @@ public class LerpObstacle : Obstacle
     [SerializeField]private Transform targetA;
     [SerializeField] private Transform targetB;
 
+
+    [SerializeField] private bool waitToStart = false;
+    [SerializeField] private float waitTime;
     // Start is called before the first frame update
     void Start()
     {
-        if (targetA != null && targetB != null)
-        { 
-            //transform.position = targetA.position;
-            
+        if(waitToStart)
+        {
+            StartCoroutine(WaitToStart());
         }
+    }
+
+    private IEnumerator WaitToStart()
+    {
+        m_isMoving = false;
+        yield return new WaitForSeconds(waitTime);
+        m_isMoving = true;
     }
 
     #if UNITY_EDITOR
@@ -45,7 +54,7 @@ public class LerpObstacle : Obstacle
     // Update is called once per frame
     void Update()
     {
-        if(isMoving)
+        if(m_isMoving)
         {
             transform.position= Vector3.Lerp(targetA.position,targetB.position,lerpPos);
             lerpPos += speed *direction* Time.deltaTime;
@@ -59,11 +68,11 @@ public class LerpObstacle : Obstacle
 
     public void ActivateObstacle()
     {
-        isMoving = true;
+        m_isMoving = true;
     }
 
     public void DeactivateObstacle()
     {
-        isMoving = false;
+        m_isMoving = false;
     }
 }
