@@ -44964,7 +44964,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900107800}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.094318315, y: -0.027722472, z: -0.0044042943, w: 0.99514633}
+  m_LocalRotation: {x: -0.0943019, y: -0.033281203, z: -0.005287411, w: 0.9949732}
   m_LocalPosition: {x: 0.000010401924, y: -0.00000018991955, z: 0.0000028599452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -60896,7 +60896,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerIndex: -1
   AutoEnableInputs: 1
-  XYAxis: {fileID: -5630151704836100654, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  XYAxis: {fileID: -5630151704836100654, guid: a9109d1be06a6d44b83063fafe8dfac5, type: 3}
   ZAxis: {fileID: 0}
 --- !u!114 &1142808423
 MonoBehaviour:
