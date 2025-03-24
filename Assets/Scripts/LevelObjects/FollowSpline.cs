@@ -34,16 +34,14 @@ public class FollowSpline : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     int splineIndex = 0;
     int knotIndex = 0;
 
     Vector3 knotTarget = Vector3.zero;
+
+    private bool resetting = false;
+
+    [SerializeField] bool waitAtFirstIndex = false;
 
     IEnumerator ResetSpline(float waitTime)
     {
@@ -56,6 +54,7 @@ public class FollowSpline : MonoBehaviour
         {
             splineIndex = 0;
             knotIndex = 0;
+            resetting = true;
         }
         else if (movementBehaviour == MovementBehaviours.INSTANTRESET)
         {
@@ -65,6 +64,21 @@ public class FollowSpline : MonoBehaviour
         }
 
         knotTarget = splines.transform.TransformPoint(splines[splineIndex].Knots.ElementAt(knotIndex).Position);
+    }
+
+    IEnumerator WaitInPlace(float waitTime)
+    {
+        float startTime= Time.time;
+
+        isActive = false;
+        while(Time.time-startTime>waitTime)
+        {
+            rigid.velocity = Vector3.zero;
+            yield return new WaitForFixedUpdate();
+        }
+
+        isActive = true;
+        resetting = false;
     }
     void EvaluateNextTarget()
     {
@@ -88,10 +102,13 @@ public class FollowSpline : MonoBehaviour
         if (isActive)
         {
             rigid.velocity = (knotTarget - rigid.transform.position).normalized * speed;
-            //rigid.transform.position+=(knotTarget- rigid.transform.position).normalized * speed;
-            //rigid.MovePosition(previousPos + (knotTarget - rigid.transform.position).normalized * speed);
+
             if (Vector3.Distance(rigid.transform.position, knotTarget) < 0.2f)
             {
+                if(resetting)
+                {
+                    WaitInPlace(waitBetweenResets);
+                }
                 EvaluateNextTarget();
             }
 

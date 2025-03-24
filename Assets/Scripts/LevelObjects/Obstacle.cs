@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    
+    [SerializeField] private bool onlyUseTrigger;
     protected virtual void KillPlayer()
     {
         SpawnManager.instance.SpawnPlayer();
@@ -13,6 +13,7 @@ public class Obstacle : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(onlyUseTrigger) return;
         if(collision.rigidbody.gameObject==PlayerManagement.player.gameObject)
         {
             KillPlayer();

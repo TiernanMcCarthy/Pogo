@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public static class GameObjectExtensions
@@ -31,10 +32,16 @@ public class PlayerManagement : MonoBehaviour
 
     [SerializeField] private CinemachineFreeLook cameraBrain;
 
+    [SerializeField] private Camera mainCamera;
+
+    [SerializeField] private Camera cinematicCamera;
+
     private GameObject belowPogoTarget;
     private Transform pogoLookat;
 
     [SerializeField] private float pogoTargetDistance = 5.0f;
+
+    [SerializeField] private TMP_Text textBox;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,8 +64,6 @@ public class PlayerManagement : MonoBehaviour
         pogoLookat = cameraBrain.GetRig(0).LookAt;
 
         DontDestroyOnLoad(belowPogoTarget);
-
-
     }
 
     public void SetCameraPosition(Vector3 position)
@@ -87,5 +92,61 @@ public class PlayerManagement : MonoBehaviour
     void LateUpdate()
     {
         belowPogoTarget.transform.position = player.transform.position + player.GetGravity().normalized * pogoTargetDistance;
+    }
+
+    public void UpdateText(string text, float length)
+    {
+        textBox.text = text;
+        StartCoroutine(HideText(length));
+    }
+
+    IEnumerator HideText(float length)
+    {
+        yield return new WaitForSeconds(length);
+        textBox.text = "";
+    }
+    /// <summary>
+    /// Cinematic Camera Control is managed here, a length specifies how long this lasts
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="forward"></param>
+    /// <param name="length"></param>
+    public void UseCinematicCamera(Vector3 position, Vector3 forward, float length)
+    {
+        player.UseCamera(cinematicCamera);
+        mainCamera.enabled = false;
+        cinematicCamera.enabled= true;
+        cinematicCamera.transform.position = position;
+        cinematicCamera.transform.forward = forward;
+        StartCoroutine(CameraCountdown(length));
+    }
+
+    /// <summary>
+    /// Cinematic Camera Control is managed by another object, it is your responsibility to relinuqish the camera
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="forward"></param>
+    public void UseCinematicCamera(Vector3 position, Vector3 forward)
+    {
+        player.UseCamera(cinematicCamera);
+        mainCamera.enabled = false;
+        cinematicCamera.enabled = true;
+        cinematicCamera.transform.position = position;
+        cinematicCamera.transform.forward = forward;
+    }
+
+    public void DisableCinematicCamera()
+    {
+        cinematicCamera.enabled = false;
+        mainCamera.enabled = true;
+        player.UseCamera(mainCamera);
+    }
+
+    IEnumerator CameraCountdown(float length)
+    {
+        yield return new WaitForSeconds(length);
+        cinematicCamera.enabled = false;
+        mainCamera.enabled = true;
+        player.UseCamera(mainCamera);
     }
 }

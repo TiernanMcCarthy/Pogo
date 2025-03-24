@@ -48,7 +48,10 @@ public class CopyVelocity : MonoBehaviour
 
     private void FixedUpdate()
     {
-       rb.velocity= PlayerManagement.player.GetVelocity().magnitude*Vector3.down*lerp;
-       lerp = Mathf.Clamp(lerp+lerpSpeed, 0.01f, velocityPercentageCopy);
+        if (!rb.isKinematic)
+        {
+            rb.velocity = PlayerManagement.player.GetVelocity().magnitude * Vector3.down * lerp;
+            lerp = Mathf.Clamp(lerp + lerpSpeed, 0.01f, velocityPercentageCopy);
+        }
     }
 }

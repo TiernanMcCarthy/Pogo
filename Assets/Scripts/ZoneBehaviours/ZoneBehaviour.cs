@@ -2,163 +2,182 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class ColliderRigidbodyReference
+namespace ZoneBehaviour
 {
-    public List<Collider> collidersInZone;
-    public Rigidbody rigid;
 
-    public ColliderRigidbodyReference(Rigidbody rig)
+    [System.Serializable]
+    public class ColliderRigidbodyReference
     {
-        rigid= rig;
-        collidersInZone= new List<Collider>();
-    }
-}
+        public List<Collider> collidersInZone;
+        public Rigidbody rigid;
 
-/// <summary>
-/// A Zone behaviour can and should implement behaviours to the player or the scene objects specified when the player is inside the zone
-/// </summary>
-public class ZoneBehaviour : MonoBehaviour
-{
-    public List<ColliderRigidbodyReference> rigidColliders;
-
-    protected virtual void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
-    {
-
-    }
-
-    protected virtual void OnRigidBodyRemoved(ColliderRigidbodyReference rigid)
-    {
-
-    }
-    public void Start()
-    {
-        rigidColliders= new List<ColliderRigidbodyReference>();
-    }
-    public void ManageZone()
-    {
-        Execute();
-    }
-    protected virtual void Execute()
-    {
-
+        public ColliderRigidbodyReference(Rigidbody rig)
+        {
+            rigid = rig;
+            collidersInZone = new List<Collider>();
+        }
     }
 
     /// <summary>
-    /// This is called the first time a rigidbody enters a zone
+    /// A Zone behaviour can and should implement behaviours to the player or the scene objects specified when the player is inside the zone
     /// </summary>
-    /// <param name="rigid"></param>
-    protected virtual void FirstEntry(ColliderRigidbodyReference rigid)
+    public class ZoneBehaviour : MonoBehaviour
     {
-        
-    }
+        public List<ColliderRigidbodyReference> rigidColliders;
 
-    //This checks rigidbodies and their coliders for presence and updates based on the situation
-    protected void CheckCollider(Collider col, Rigidbody target, out ColliderRigidbodyReference colliderRigidbody, bool removed)
-    {
-        colliderRigidbody = null;
-        for (int i = 0; i < rigidColliders.Count; i++)
+        [SerializeField] private bool activateOnce = false;
+
+        protected bool activatedBefore = false;
+
+        protected virtual void OnRigidBodyAdded(ColliderRigidbodyReference rigidContainer)
         {
-            //We've found our target, it already exists, check and update collider references
-            if (target == rigidColliders[i].rigid)
+
+        }
+
+        protected virtual void OnRigidBodyRemoved(ColliderRigidbodyReference rigid)
+        {
+
+        }
+        public void Start()
+        {
+            rigidColliders = new List<ColliderRigidbodyReference>();
+        }
+        public void ManageZone()
+        {
+            Execute();
+        }
+        protected virtual void Execute()
+        {
+
+        }
+
+        /// <summary>
+        /// This is called the first time a rigidbody enters a zone
+        /// </summary>
+        /// <param name="rigid"></param>
+        protected virtual void FirstEntry(ColliderRigidbodyReference rigid)
+        {
+
+        }
+
+        //This checks rigidbodies and their coliders for presence and updates based on the situation
+        protected void CheckCollider(Collider col, Rigidbody target, out ColliderRigidbodyReference colliderRigidbody, bool removed)
+        {
+            colliderRigidbody = null;
+            for (int i = 0; i < rigidColliders.Count; i++)
             {
-                colliderRigidbody = rigidColliders[i];
-                if (!removed)
+                //We've found our target, it already exists, check and update collider references
+                if (target == rigidColliders[i].rigid)
                 {
-                    if (!colliderRigidbody.collidersInZone.Contains(col))
+                    colliderRigidbody = rigidColliders[i];
+                    if (!removed)
                     {
-                        colliderRigidbody.collidersInZone.Add(col);
-                    }
-                }
-                else
-                {
-                    if (colliderRigidbody.collidersInZone.Contains(col))
-                    {
-                        colliderRigidbody.collidersInZone.Remove(col);
-                        if (colliderRigidbody.collidersInZone.Count==0)
+                        if (!colliderRigidbody.collidersInZone.Contains(col))
                         {
-                            rigidColliders.Remove(colliderRigidbody);
+                            colliderRigidbody.collidersInZone.Add(col);
                         }
                     }
-                }
-                return;
-            }
-        }
-
-        if (!removed)
-        {
-            colliderRigidbody = new ColliderRigidbodyReference(target);
-            colliderRigidbody.collidersInZone.Add(col);
-            FirstEntry(colliderRigidbody);
-            rigidColliders.Add(colliderRigidbody);
-        }
-        return;
-    }
-
-    protected void CheckCollider(Collider col, Rigidbody target,bool removed)
-    {
-        ColliderRigidbodyReference colliderRigidbody = null;
-        for (int i = 0; i < rigidColliders.Count; i++)
-        {
-            //We've found our target, it already exists, check and update collider references
-            if (target == rigidColliders[i].rigid)
-            {
-                colliderRigidbody = rigidColliders[i];
-                if (!removed)
-                {
-                    if (!colliderRigidbody.collidersInZone.Contains(col))
+                    else
                     {
-                        colliderRigidbody.collidersInZone.Add(col);
-                    }
-                }
-                else
-                {
-                    if (colliderRigidbody.collidersInZone.Contains(col))
-                    {
-                        colliderRigidbody.collidersInZone.Remove(col);
-                        if (colliderRigidbody.collidersInZone.Count == 0)
+                        if (colliderRigidbody.collidersInZone.Contains(col))
                         {
-                            rigidColliders.Remove(colliderRigidbody);
+                            colliderRigidbody.collidersInZone.Remove(col);
+                            if (colliderRigidbody.collidersInZone.Count == 0)
+                            {
+                                rigidColliders.Remove(colliderRigidbody);
+                            }
                         }
                     }
+                    return;
                 }
+            }
+
+            if (!removed)
+            {
+                colliderRigidbody = new ColliderRigidbodyReference(target);
+                colliderRigidbody.collidersInZone.Add(col);
+                FirstEntry(colliderRigidbody);
+                rigidColliders.Add(colliderRigidbody);
+            }
+            return;
+        }
+
+        protected void CheckCollider(Collider col, Rigidbody target, bool removed)
+        {
+            ColliderRigidbodyReference colliderRigidbody = null;
+            for (int i = 0; i < rigidColliders.Count; i++)
+            {
+                //We've found our target, it already exists, check and update collider references
+                if (target == rigidColliders[i].rigid)
+                {
+                    colliderRigidbody = rigidColliders[i];
+                    if (!removed)
+                    {
+                        if (!colliderRigidbody.collidersInZone.Contains(col))
+                        {
+                            colliderRigidbody.collidersInZone.Add(col);
+                        }
+                    }
+                    else
+                    {
+                        if (colliderRigidbody.collidersInZone.Contains(col))
+                        {
+                            colliderRigidbody.collidersInZone.Remove(col);
+                            if (colliderRigidbody.collidersInZone.Count == 0)
+                            {
+                                rigidColliders.Remove(colliderRigidbody);
+                            }
+                        }
+                    }
+                    return;
+                }
+            }
+
+            if (!removed)
+            {
+                colliderRigidbody = new ColliderRigidbodyReference(target);
+                colliderRigidbody.collidersInZone.Add(col);
+                rigidColliders.Add(colliderRigidbody);
+                FirstEntry(colliderRigidbody);
+            }
+            return;
+        }
+
+        public void OnTriggerEnter(Collider other)
+        {
+            if(activatedBefore&& activateOnce|| other.isTrigger)
+            {
                 return;
             }
-        }
 
-        if (!removed)
-        {
-            colliderRigidbody = new ColliderRigidbodyReference(target);
-            colliderRigidbody.collidersInZone.Add(col);
-            rigidColliders.Add(colliderRigidbody);
-            FirstEntry(colliderRigidbody);
-        }
-        return;
-    }
-
-    public void OnTriggerEnter(Collider other)
-    {
-        if(other.attachedRigidbody!=null)
-        {
-            ColliderRigidbodyReference colReference = null;
-            CheckCollider(other, other.attachedRigidbody,out colReference,false);
-            OnRigidBodyAdded(colReference);
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.attachedRigidbody != null)
-        {
-            ColliderRigidbodyReference colReference = null;
-            CheckCollider(other, other.attachedRigidbody,out colReference, true);
             
-            if(colReference.collidersInZone.Count==0)
+            if (other.attachedRigidbody != null)
             {
-                OnRigidBodyRemoved(colReference);
+                ColliderRigidbodyReference colReference = null;
+                CheckCollider(other, other.attachedRigidbody, out colReference, false);
+                OnRigidBodyAdded(colReference);
+                activatedBefore = true;
             }
-
         }
-    }
 
+        public void OnTriggerExit(Collider other)
+        {
+            if (other.attachedRigidbody != null)
+            {
+                ColliderRigidbodyReference colReference = null;
+                CheckCollider(other, other.attachedRigidbody, out colReference, true);
+
+                if(colReference==null)
+                {
+                    return;
+                }
+                if (colReference.collidersInZone.Count == 0)
+                {
+                    OnRigidBodyRemoved(colReference);
+                }
+
+            }
+        }
+
+    }
 }

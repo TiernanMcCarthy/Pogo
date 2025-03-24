@@ -29,36 +29,65 @@ public class Sequence : MonoBehaviour
     [SerializeField] private UnityEvent failActions;
 
     private bool hasCompleted = false;
-    
+
+    [SerializeField] private float waitToComplete = 0;
+
+
+    private bool completing;
     public void ActivateSequence()
     {
         isActive=true;
     }
 
-    private void CheckTrackers()
+    private int GetCompleteTrackers()
     {
-        int completeTrackers = 0;
+        int count = 0;
         for (int i = 0; i < trackersToComplete.Count; ++i)
         {
             if (trackersToComplete[i].ExecutesEveryFrame())
             {
                 if (trackersToComplete[i].CheckCompletion())
                 {
-                    completeTrackers++;
+                    count++;
                 }
             }
-
-            if(completeTrackers==trackersToComplete.Count && !hasCompleted) //Completetion Events are called once upon all trackers being met
-            {
-                completionActions.Invoke();
-                hasCompleted = true;
-            }
-            else if(completeTrackers<trackersToComplete.Count && hasCompleted) //Fail events should only happen when the 
-            {
-                failActions.Invoke();
-                hasCompleted = false;
-            }
         }
+        return count;
+    }
+
+    private void CheckTrackers()
+    {
+        int completeTrackers = GetCompleteTrackers();
+
+
+        if (completing == false && trackersToComplete.Count == completeTrackers && !hasCompleted)
+        {
+            completing = true;
+            StartCoroutine(CompletionCheck());
+            hasCompleted = true;
+            return;
+        }
+
+        if (completeTrackers < trackersToComplete.Count && hasCompleted) //Fail events should only happen when the 
+        {
+            failActions.Invoke();
+            StopCoroutine(CompletionCheck());
+            hasCompleted = false;
+        }
+    }
+
+    private IEnumerator CompletionCheck()
+    {
+        yield return new WaitForSeconds(waitToComplete);
+
+        int completeTrackers = GetCompleteTrackers();
+
+        if(completeTrackers==trackersToComplete.Count)
+        {
+            completionActions.Invoke();
+        }
+
+        completing = false;
     }
 
     private void ProcessTrackers()

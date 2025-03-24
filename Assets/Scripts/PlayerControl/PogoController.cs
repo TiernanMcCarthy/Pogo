@@ -54,6 +54,8 @@ public class PogoController : MonoBehaviour
     [SerializeField] private AudioClip springCompressSound;
     [SerializeField] private float springReleaseVolume = 0.4f;
     [SerializeField] private AudioClip springReleaseSound;
+    [SerializeField] private SoundContainer smallJumpSounds;
+    [SerializeField] private SoundContainer largeJumpSounds;
 
 
     #endregion
@@ -111,6 +113,11 @@ public class PogoController : MonoBehaviour
         return rb.velocity;
     }
 
+    public void UseCamera(Camera camera)
+    {
+        activeCamera = camera.transform;
+    }
+
     private float GetGroundAngleRelativeToGravity()
     {
         RaycastHit hit;
@@ -165,7 +172,7 @@ public class PogoController : MonoBehaviour
     }
 
     //Store "Landing" force and use this as a multiplier for next jump for a few seconds before it fades?
-    private void Jump(float jumpTime)
+    private void Jump(float jumpTime, float jumpPercentage)
     {
         Vector3 dir = transform.up * jumpForce * Mathf.Clamp(jumpTime,0.3f,maxJumpTime)*jumpModifier;
 
@@ -179,7 +186,19 @@ public class PogoController : MonoBehaviour
         jumping = false;
 
         //change sound to spring release
-        springSource.clip = springReleaseSound;
+
+        //big jump
+        if(jumpPercentage>=0.5f)
+        {
+            springSource.volume = 0.7f;
+            springSource.clip = largeJumpSounds.GetGenericSound();
+        }
+        else
+        {
+            springSource.volume = 0.2f;
+            springSource.clip = smallJumpSounds.GetGenericSound();
+        }
+
         springSource.Play();
 
         StartCoroutine(ResetSpring());
@@ -264,6 +283,7 @@ public class PogoController : MonoBehaviour
 
             //play spring jump audio
             springSource.clip = springCompressSound;
+            springSource.volume = 1;
             springSource.Play();
 
             //Give a bit more grip if we detect a wall of at least 70 degrees against gravity
@@ -290,14 +310,14 @@ public class PogoController : MonoBehaviour
             if(Time.time-jumpTime>maxJumpTime)
             {
                 ResetJump();
-                Jump(maxJumpTime);
+                Jump(maxJumpTime,jumpLerp);
                 return;
             }
 
             if(!inputActions.Player.Jump.IsPressed())
             {
                 ResetJump();
-                Jump(Time.time - jumpTime);
+                Jump(Time.time - jumpTime,jumpLerp);
                 StartCoroutine(ResetSpring(jumpLerp));
                 return;
             }
