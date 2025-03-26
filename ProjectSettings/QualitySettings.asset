@@ -146,7 +146,7 @@ QualitySettings:
     resolutionScalingFixedDPIFactor: 1
     customRenderPipeline: {fileID: 11400000, guid: 7b7fd9122c28c4d15b667c7040e3b3fd,
       type: 2}
-    terrainQualityOverrides: 0
+    terrainQualityOverrides: 144
     terrainPixelError: 1
     terrainDetailDensityScale: 1
     terrainBasemapDistance: 1000
@@ -154,7 +154,7 @@ QualitySettings:
     terrainTreeDistance: 5000
     terrainBillboardStart: 50
     terrainFadeLength: 5
-    terrainMaxTrees: 50
+    terrainMaxTrees: 150
     excludedTargetPlatforms: []
   m_TextureMipmapLimitGroupNames: []
   m_PerPlatformDefaultQuality:
