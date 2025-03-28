@@ -257,8 +257,14 @@ public class PogoController : MonoBehaviour
     private bool CheckIfGrounded()
     {
         RaycastHit hit;
-        // Cast ray down to detect the terrain or surface below the player
-        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*springJumpRange,~0,QueryTriggerInteraction.Ignore))
+        Vector3 boxWidth = springTransform.localScale*0.5f;
+        boxWidth.y *= 1.05f;
+        int layerIndex = LayerMask.NameToLayer("Ignore Raycast");
+        LayerMask mask = ~(1 << layerIndex);
+
+        Collider[] cols=Physics.OverlapBox(springTransform.position, boxWidth,springTransform.rotation,mask,QueryTriggerInteraction.Ignore);
+
+        if (Physics.Raycast(springTransform.position, springTransform.up*-1, out hit, springHeight*springJumpRange,~0,QueryTriggerInteraction.Ignore) || cols.Length>0 )
         {
             lastGroundTime = Time.time;
             if (!jumping)
@@ -390,6 +396,7 @@ public class PogoController : MonoBehaviour
         rb.velocity= Vector3.zero;
         rb.angularVelocity = Vector3.zero;
     }
+
 
     private void OnTriggerEnter(Collider col)
     {
