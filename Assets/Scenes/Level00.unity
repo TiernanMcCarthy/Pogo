@@ -20679,7 +20679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.3
+  speed: 0.2
   lerpPos: 0.4
   direction: 1
   m_isMoving: 1
@@ -22703,9 +22703,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 291126901}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000022340114, y: 0.0000000097643085, z: 5.968963e-10,
+  m_LocalRotation: {x: 0.000000011190372, y: 0.0000000019786242, z: -0.0000000034668917,
     w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.0000040576206, y: 0.0000015651815, z: 0.000005284404}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -22783,7 +22783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 0
   direction: 1
   m_isMoving: 1
@@ -23061,7 +23061,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 0
   direction: 1
   m_isMoving: 1
@@ -27335,7 +27335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 1
   direction: 1
   m_isMoving: 1
@@ -27959,7 +27959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.3
+  speed: 0.2
   lerpPos: 0.4
   direction: 1
   m_isMoving: 1
@@ -29971,7 +29971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 1
   direction: 1
   m_isMoving: 1
@@ -31703,8 +31703,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 558401723}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.034776706, y: -0.0000000032519036, z: -3.0701133e-10, w: 0.99939513}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.03477673, y: 0.0000007889247, z: 0.00000008005961, w: 0.99939513}
+  m_LocalPosition: {x: -0.0000040576206, y: 0.0000015651815, z: 0.000005284404}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -37594,7 +37594,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.3
+  speed: 0.2
   lerpPos: 0.4
   direction: 1
   m_isMoving: 1
@@ -40222,7 +40222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.3
+  speed: 0.2
   lerpPos: 0.4
   direction: 1
   m_isMoving: 1
@@ -40621,7 +40621,7 @@ GameObject:
   - component: {fileID: 774052466}
   - component: {fileID: 774052467}
   m_Layer: 0
-  m_Name: PlayerManger
+  m_Name: PlayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45727,8 +45727,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900107800}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.09830393, y: -0.019855566, z: -0.0033019802, w: 0.9949529}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.09830401, y: -0.019856757, z: -0.0033021802, w: 0.99495286}
+  m_LocalPosition: {x: -0.0000040576206, y: 0.0000015651815, z: 0.000005284404}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46121,7 +46121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 1
   direction: 1
   m_isMoving: 1
@@ -56793,22 +56793,22 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1115637646}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 22f173488a9387443a504f35457b3713,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -104.619
+      value: -68.7371
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22f173488a9387443a504f35457b3713,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.533
+      value: 7.85767
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22f173488a9387443a504f35457b3713,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 48.88214
+      value: -24.534943
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 22f173488a9387443a504f35457b3713,
         type: 3}
@@ -60217,6 +60217,7 @@ Transform:
   - {fileID: 764163097}
   - {fileID: 190807286}
   - {fileID: 831998061}
+  - {fileID: 1568315018}
   m_Father: {fileID: 2134955197}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1117688027 stripped
@@ -61629,7 +61630,7 @@ MonoBehaviour:
   m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
-  m_Dithering: 0
+  m_Dithering: 1
   m_ClearDepth: 1
   m_AllowXRRendering: 1
   m_AllowHDROutput: 1
@@ -61690,7 +61691,7 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 10
-  m_Depth: -1
+  m_Depth: 10
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -62795,7 +62796,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 1
   direction: 1
   m_isMoving: 1
@@ -66532,7 +66533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.3
+  speed: 0.2
   lerpPos: 0.4
   direction: 1
   m_isMoving: 1
@@ -93813,6 +93814,12 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!4 &1568315018 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 22f173488a9387443a504f35457b3713,
+    type: 3}
+  m_PrefabInstance: {fileID: 1030567458}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1572619567
 GameObject:
   m_ObjectHideFlags: 0
@@ -94441,7 +94448,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 0
   direction: 1
   m_isMoving: 1
@@ -96482,7 +96489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 0
   direction: 1
   m_isMoving: 1
@@ -103167,7 +103174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 1
   direction: 1
   m_isMoving: 1
@@ -120818,7 +120825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onlyUseTrigger: 0
-  speed: 0.5
+  speed: 0.4
   lerpPos: 0
   direction: 1
   m_isMoving: 1
@@ -121925,7 +121932,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.0000000018626449, w: 1}
   m_LocalPosition: {x: -11.116352, y: -20.569609, z: -17.30156}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.97, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2018663535}
@@ -122021,7 +122028,7 @@ MeshRenderer:
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
   m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 2
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -131226,4 +131233,3 @@ SceneRoots:
   - {fileID: 1877191226}
   - {fileID: 2134955197}
   - {fileID: 1716708016}
-  - {fileID: 1030567458}
